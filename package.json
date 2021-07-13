@@ -7,10 +7,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.14",
+    "@chakra-ui/react": "^1.6.5",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "firebase": "^8.7.1",
+    "framer-motion": "^4.1.17",
     "mongodb": "^3.5.9",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "uniqid": "^5.3.0"
+  }
 }
