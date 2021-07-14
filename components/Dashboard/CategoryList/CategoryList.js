@@ -1,4 +1,4 @@
-import { Accordion, Alert, AlertDescription, AlertIcon, Box, Heading, Text } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Box, Heading, Text } from "@chakra-ui/react"
 import { useState } from "react"
 import CategoryItem from "./CategoryItem"
 
@@ -13,7 +13,7 @@ const CategoryList = ({categories}) => {
     }
     return (
         <Box>
-            <Heading size="lg" mb={4}>Lista de categorias</Heading>
+            <Heading size="md" mb={4}>Lista de categorias</Heading>
             <Box height="500px" overflowY="auto">
                 {
                     warning && 
@@ -22,21 +22,19 @@ const CategoryList = ({categories}) => {
                         <AlertDescription>{alert.msg}</AlertDescription>
                     </Alert>
                 }
-                <Accordion defaultIndex={[0]} allowMultiple>
-                    {
-                        categories.length===0 &&
-                        <Text>No tienes ninguna categoría</Text>
-                    }
-                    {
-                        categories.map((category)=> <CategoryItem 
-                            key={category.id} 
-                            category={category}
-                            setWarning={setWarning} 
-                            setAlert={setAlert}
-                            clearWarning={clearWarning} 
-                        />)
-                    }
-                </Accordion>
+                {
+                    categories.length===0 &&
+                    <Text>No tienes ninguna categoría</Text>
+                }
+                {
+                    categories.map((category)=> <CategoryItem 
+                        key={category.id} 
+                        category={category}
+                        setWarning={setWarning} 
+                        setAlert={setAlert}
+                        clearWarning={clearWarning} 
+                    />)
+                }
             </Box>
         </Box>
     )

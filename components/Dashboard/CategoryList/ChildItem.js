@@ -2,7 +2,7 @@ import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, HStack, Input, Spacer, Text } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
 import { useRef, useState } from "react"
-import { db } from "../../../firebase"
+import { db } from "../../../util/firebase"
 import { capitalize } from '../../../util/capitalize'
 
 const ChildItem = ({child, clearWarning, setAlert, setWarning, oldCategory, oldSubcategory}) => {

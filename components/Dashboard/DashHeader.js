@@ -1,22 +1,7 @@
-import { Box, Heading, Text } from "@chakra-ui/react"
-import { useRouter } from "next/dist/client/router"
+import { Box, Flex, Heading, Spacer, Stack, Text } from "@chakra-ui/react"
+import LogoutButton from "../LogoutButton"
 
 const DashHeader = () => {
-    const router = useRouter()
-    const getText = () => {
-        switch(router.pathname){
-            case '/dashboard':
-                return 'Bienvenido/a! desde aquí podras controlar toda tu tienda online'
-            case '/dashboard/categories':
-                return 'Categorías'
-            case '/dashboard/products':
-                return 'Productos'
-            case '/dashboard/store':
-                return 'Tienda'
-            default:
-                return 'Bienvenido/a! desde aquí podras controlar toda tu tienda online'
-        }
-    }
     return(
         <Box
             color="gray.700"
@@ -26,14 +11,18 @@ const DashHeader = () => {
             fontWeight="bold"
             mt={5}
             border="1px"
-            borderColor="gray.400"
+            borderColor="teal"
             boxShadow="base"
         >
-            <Text fontSize="lg" color="gray.400">Ecommerce-App</Text>
-            <Heading mb={2}>Panel de control</Heading>
-            <Text color="gray.500">
-                {getText()}
-            </Text>
+            <Flex>
+                <Stack>
+                    <Text fontSize="lg" color="gray.400">Ecommerce-App</Text>
+                    <Heading mb={2}>Panel de control</Heading>
+                    <Text color="gray.500">Bienvenido/a! desde aquí podras controlar toda tu tienda online</Text>
+                </Stack>
+                <Spacer/>
+                <LogoutButton/>
+            </Flex>
         </Box>
     )
 }

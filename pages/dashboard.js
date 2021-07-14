@@ -1,6 +1,7 @@
-import { Grid, HStack, } from "@chakra-ui/react"
+import { Grid } from "@chakra-ui/react"
 import DashCard from "../components/Dashboard/DashCard"
 import DashHeader from "../components/Dashboard/DashHeader"
+import withAuth from "../hoc/withAuth"
 
 const Dashboard = () => {
     return(
@@ -31,4 +32,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default withAuth(Dashboard)

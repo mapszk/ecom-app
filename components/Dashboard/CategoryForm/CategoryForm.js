@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Box, Button, Heading, Input, Radio, RadioGroup, HStack, Alert, AlertIcon, CloseButton, AlertTitle, AlertDescription } from "@chakra-ui/react"
 import { useRef, useState } from "react"
-import { db } from '../../../firebase'
+import { db } from "../../../util/firebase"
 import SubcategoryInput from "./SubcategoryInput"
 import uniqid from 'uniqid'
 import { useRouter } from "next/dist/client/router"
@@ -89,7 +89,7 @@ const CategoryForm = () => {
     }
     return(
         <Box>
-            <Heading size="lg" mb={4}>Agregar categoría</Heading>
+            <Heading size="md" mb={4}>Agregar categoría</Heading>
             <form onSubmit={handleSubmit}>
                     <FormControl id="name" mb={2}>
                         <FormLabel>Nombre de la categoría</FormLabel>

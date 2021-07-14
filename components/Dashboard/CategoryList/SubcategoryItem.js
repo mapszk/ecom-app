@@ -5,7 +5,7 @@ import ChildItem from './ChildItem'
 import { useRef, useState } from "react"
 import uniqid from 'uniqid'
 import { capitalize } from '../../../util/capitalize'
-import { db } from '../../../firebase'
+import { db } from '../../../util/firebase'
 import { useRouter } from 'next/dist/client/router'
 
 const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCategory}) => {
