@@ -132,7 +132,7 @@ const ChildItem = ({child, clearWarning, setAlert, setWarning, oldCategory, oldS
                         </HStack>
                     }
                     <Spacer/>
-                    <Button onClick={()=>setIsEditing(true)} variant="outline" size="sm" colorScheme="teal">
+                    <Button onClick={()=>setIsEditing(true)} variant="outline" size="sm" colorScheme="primary">
                         <EditIcon/>
                     </Button>
                     <Button onClick={()=>setModal(true)} variant="outline" size="sm" ml={2} colorScheme="red">

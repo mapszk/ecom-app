@@ -135,7 +135,7 @@ const ProductForm = ({categories}) => {
                         <AlertDescription>{alert.msg}</AlertDescription>
                     </Alert>
                 }
-                <Button isLoading={isSubmitting} loadingText="Enviando" type="submit" colorScheme="teal" isFullWidth mt={4}>Agregar</Button>
+                <Button isLoading={isSubmitting} loadingText="Enviando" type="submit" colorScheme="primary" isFullWidth mt={4}>Agregar</Button>
             </form>
         </Box>
     )

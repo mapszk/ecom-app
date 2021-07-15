@@ -1,17 +1,16 @@
 import { Box, Flex, Heading, Spacer, Stack, Text } from "@chakra-ui/react"
-import LogoutButton from "../LogoutButton"
+import LogoutButton from "./LogoutButton"
 
 const DashHeader = () => {
     return(
         <Box
-            color="gray.700"
             bgColor="white"
             rounded="xl"
             p={4}
             fontWeight="bold"
             mt={5}
             border="1px"
-            borderColor="teal"
+            borderColor="primary.500"
             boxShadow="base"
         >
             <Flex>

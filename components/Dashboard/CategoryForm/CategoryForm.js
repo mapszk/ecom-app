@@ -120,7 +120,7 @@ const CategoryForm = () => {
                             <AlertDescription mr={2}>{alert.msg}</AlertDescription>
                         </Alert>
                     }
-                    <Button loadingText="Enviando" isLoading={isSubmitting} type="submit" colorScheme="teal" isFullWidth mt={4}>Agregar</Button>
+                    <Button loadingText="Enviando" isLoading={isSubmitting} type="submit" colorScheme="primary" isFullWidth mt={4}>Agregar</Button>
             </form>
         </Box>
     )

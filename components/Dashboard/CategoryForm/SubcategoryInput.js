@@ -43,7 +43,7 @@ const SubcategoryInput = ({setSubcategories, subcategory, subcategories}) => {
                                 <CloseIcon/>
                             </Button>
                             <Button 
-                                colorScheme="teal" 
+                                colorScheme="primary" 
                                 isDisabled={subcategories.length===10}
                                 onClick={()=> addSubcategory()}
                             >

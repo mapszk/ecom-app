@@ -20,6 +20,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "chroma-js": "^2.1.2",
     "react-color": "^2.19.3",
     "uniqid": "^5.3.0"
   }

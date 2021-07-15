@@ -18,7 +18,10 @@ const withAuth = Component => {
         )
     }
     if(Component.getInitialProps){
-      Auth.getInitialProps = Component.getInitialProps;
+        Auth.getInitialProps = Component.getInitialProps;
+    }
+    if(Component.getServerSideProps){
+        Auth.getServerSideProps = Component.getServerSideProps;
     }
     return Auth
 }

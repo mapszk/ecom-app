@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, Input, Stack } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, Input } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { auth } from '../util/firebase'
@@ -72,9 +72,9 @@ const login = () => {
                         <AlertDescription>{alert.msg}</AlertDescription>
                     </Alert>
                 }
-                <Button isLoading={isSubmitting} type="submit" mb={2} isFullWidth colorScheme="teal">Ingresar</Button>
+                <Button isLoading={isSubmitting} type="submit" mb={2} isFullWidth colorScheme="primary">Ingresar</Button>
             </form>
-            <Button onClick={()=>router.push('/')} isFullWidth variant="outline" colorScheme="teal">Volver a la tienda</Button>
+            <Button onClick={()=>router.push('/')} isFullWidth variant="outline" colorScheme="primary">Volver a la tienda</Button>
             <Alert mt={4} rounded="md" status="info">
                 <AlertIcon/>
                 <AlertDescription>Si quieres probar la demo ingresa el email 'admin@email.com' y la contraseña 'prueba1'</AlertDescription>

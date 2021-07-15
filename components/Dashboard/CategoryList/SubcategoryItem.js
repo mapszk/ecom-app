@@ -159,7 +159,7 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                         </HStack>
                     }
                     <Spacer/>
-                    <Button onClick={()=>setIsEditing(true)} size="sm" colorScheme="teal">
+                    <Button onClick={()=>setIsEditing(true)} size="sm" colorScheme="primary">
                         <EditIcon/>
                     </Button>
                     <Button onClick={()=>setModal(true)} size="sm" ml={2} colorScheme="red">
@@ -171,7 +171,7 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                 showChilds && childs.length<5 && 
                 <HStack p={2} ml={20}>   
                     <Input variant="filled" value={newChildValue} onChange={e=>setNewChildValue(e.target.value)} size="sm"/>
-                    <Button isLoading={isSubmitting} onClick={addChild} colorScheme="teal" size="sm">
+                    <Button isLoading={isSubmitting} onClick={addChild} colorScheme="primary" size="sm">
                         <AddIcon/>
                     </Button>
                 </HStack>

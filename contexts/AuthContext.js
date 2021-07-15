@@ -10,7 +10,7 @@ const AuthContextProvider = ({children}) => {
     const [user, setUser] = useState(null)
     useEffect(() => {
         setLoading(true)
-        const unsubscribe = auth.onIdTokenChanged(async user=>{
+        const unsubscribe = auth.onAuthStateChanged(async user=>{
             if(!user){
                 setUser(null)
                 setLoading(false)
@@ -29,7 +29,7 @@ const AuthContextProvider = ({children}) => {
             {
                 loading ? 
                 <Flex justify="center" align="center" width="100vw" height="100vh">
-                    <Spinner thickness="5px" m="auto" size="xl" color="teal" />
+                    <Spinner m="auto" size="xl" color="primary.500" />
                 </Flex>
                 : children
             }

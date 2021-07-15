@@ -1,26 +1,28 @@
-import { Button, Flex, Heading, Link, Text } from "@chakra-ui/react"
+import { Button, Flex, Heading, Link, Spacer, Text } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
 
 const DashCard = ({title, desc, link}) => {
     const router = useRouter()
     return(
         <Flex 
-            justifyContent="space-between"
+            justifyContent="start"
             direction="column"
-            minHeight="200px"
+            minHeight="280px"
             bgColor="white"
             boxShadow="base"
             rounded="md"
             p={5}
-            _hover={{border: "1px", borderColor: "teal.500"}}
+            _hover={{border: "1px", borderColor: "primary.500"}}
         >
             <Heading size="lg" mb={2}>{title}</Heading>
             <Text pr={3} mb={4}>{desc}</Text>
+            <Spacer/>
             <Button
                 variant="solid"
                 onClick={()=>router.push(link)}
                 alignSelf="flex-start" 
-                colorScheme="teal"
+                justifySelf="end"
+                colorScheme="primary"
             >
                 Ir a {title.toLowerCase()}
             </Button>

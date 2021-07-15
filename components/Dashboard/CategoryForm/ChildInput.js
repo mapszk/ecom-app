@@ -40,7 +40,7 @@ const ChildInput = ({setSubcategories, subcategory, child, childs}) => {
                     </Button>
                     <Button 
                         isDisabled={childs.length===5}
-                        colorScheme="teal" 
+                        colorScheme="primary" 
                         variant="outline" 
                         ml={2}
                         onClick={()=> addChild(subcategory, child)}

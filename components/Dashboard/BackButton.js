@@ -5,7 +5,7 @@ import { useRouter } from "next/dist/client/router"
 const BackButton = ({link}) => {
     const router = useRouter()
     return (
-        <Button colorScheme="teal" size="sm" onClick={()=>router.push(link)}>
+        <Button colorScheme="primary" size="sm" onClick={()=>router.push(link)}>
             <ArrowBackIcon/>
         </Button>
     )

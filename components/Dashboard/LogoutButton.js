@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
 import { useState } from "react"
-import { auth } from "../util/firebase"
+import { auth } from "../../util/firebase"
 
 const LogoutButton = () => {
     const router = useRouter()
@@ -14,7 +14,7 @@ const LogoutButton = () => {
         }) 
     }
     return (
-        <Button isLoading={isSubmitting} onClick={handleClick} colorScheme="teal">
+        <Button isLoading={isSubmitting} onClick={handleClick} colorScheme="primary">
             Cerrar sesión
         </Button>
     )

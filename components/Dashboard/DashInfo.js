@@ -1,6 +1,6 @@
 import { Heading, HStack } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
-import BackButton from "../BackButton"
+import BackButton from './BackButton'
 
 const DashInfo = ({link}) => {
     const router = useRouter()

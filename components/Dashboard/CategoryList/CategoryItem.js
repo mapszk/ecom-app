@@ -158,7 +158,7 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
                             </HStack>
                         }
                         <Spacer/>
-                        <Button isDisabled={isEditing} size="sm" colorScheme="teal" onClick={()=>setIsEditing(true)}>
+                        <Button isDisabled={isEditing} size="sm" colorScheme="primary" onClick={()=>setIsEditing(true)}>
                             <EditIcon/>
                         </Button>
                         <Button onClick={()=>setModal(true)} size="sm" ml={2} colorScheme="red">
@@ -170,7 +170,7 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
                     showSubcategories && subcategories.length<10 && 
                     <HStack p={2} ml={8}>   
                         <Input variant="filled" value={newSubValue} onChange={e=>setNewSubValue(e.target.value)} size="sm"/>
-                        <Button isLoading={isSubmitting} onClick={addSubcategory} colorScheme="teal" size="sm">
+                        <Button isLoading={isSubmitting} onClick={addSubcategory} colorScheme="primary" size="sm">
                             <AddIcon/>
                         </Button>
                     </HStack>

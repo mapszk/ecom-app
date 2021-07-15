@@ -24,7 +24,7 @@ const Products = ({products, categories}) => {
                 rounded="xl"
                 bgColor="white"
                 border="1px"
-                borderColor="teal"
+                borderColor="primary.500"
                 p={4}
             >
                 <DashInfo link={'/dashboard'}/>
