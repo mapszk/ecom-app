@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, Input } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { auth } from '../util/firebase'
+import { auth } from '../util/firebaseClient'
 
 const login = () => {
     const router = useRouter()

@@ -2,7 +2,7 @@ import { ChevronDownIcon, DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons"
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, HStack, Link, Spacer, Stack, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
 import { useRef, useState } from "react"
-import { db, storage } from "../../../util/firebase"
+import { db, storage } from "../../../util/firebaseClient"
 import { formatPrice } from '../../../util/formatPrice'
 
 const ProductItem = ({product, setAlert, setWarning, clearWarning}) => {

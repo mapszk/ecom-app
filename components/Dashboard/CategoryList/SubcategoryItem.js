@@ -1,22 +1,17 @@
-import { AddIcon, CheckIcon, ChevronDownIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Flex, HStack, Spacer } from '@chakra-ui/layout'
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Input, Text } from '@chakra-ui/react'
-import ChildItem from './ChildItem'
 import { useRef, useState } from "react"
-import uniqid from 'uniqid'
 import { capitalize } from '../../../util/capitalize'
-import { db } from '../../../util/firebase'
+import { db } from '../../../util/firebaseClient'
 import { useRouter } from 'next/dist/client/router'
 
 const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCategory}) => {
-    const { name, childs } = subcategory
+    const { name } = subcategory
     const cancelRef = useRef()
-    const subcategoryRef = useRef()
     const [modal, setModal] = useState(false)
-    const [showChilds, setShowChilds] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [editValue, setEditValue] = useState(capitalize(name))
-    const [newChildValue, setNewChildValue] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [edited, setEdited] = useState(false)
     const router = useRouter()
@@ -48,34 +43,6 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                 return
             })
     }
-    const addChild = async () => {
-        if(newChildValue==='') return
-        setIsSubmitting(true)
-        const newSubcategories = oldCategory.subcategories.map(sub=> sub.id===subcategory.id ? ({...sub, childs: [...sub.childs, {id: uniqid(), name: newChildValue.trim()}]}) : sub)
-        await db.collection('categories')
-            .doc(oldCategory.id)
-            .update({
-                ...oldCategory,
-                subcategories: newSubcategories
-            })
-            .then(()=>{
-                setWarning(true)
-                setAlert({msg: 'Hijo creado', type: 'success'})
-                clearWarning()
-                setIsEditing(false)
-                setEdited(true)
-                setIsSubmitting(false)
-                setNewChildValue('')
-                router.reload()
-            })
-            .catch(()=>{
-                setWarning(true)
-                setAlert({msg: 'Ha ocurrido un error, por favor intenta de nuevo', type: 'error'})
-                clearWarning()
-                setIsSubmitting(false)
-                return
-            })
-    }
     const deleteSubcategory = async () => {
         setIsSubmitting(false)
         await db.collection('categories')
@@ -85,12 +52,12 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                 subcategories: oldCategory.subcategories.filter(sub=> sub.id !== subcategory.id)
             })
             .then(()=>{
-                subcategoryRef.current.remove()
                 setIsSubmitting(false)
                 setModal(false)
                 setAlert({msg: 'Subcategoría borrada', type: 'success'})
                 setWarning(true)
                 clearWarning()
+                router.reload()
                 return
             })
             .catch(()=>{
@@ -129,18 +96,16 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                 </AlertDialogOverlay>
             </AlertDialog>
             <HStack 
-                ref={subcategoryRef}
                 p={2}
                 ml={8} 
                 mt={1}
                 rounded="md"
                 _hover={{bg: "gray.100"}}
             >
-                <ChevronDownIcon cursor="pointer" w={6} h={6} onClick={()=>setShowChilds(!showChilds)} />
                 <Flex align="center" flexDirection="row" width="full">
                     {
                         !isEditing ? <Text>{edited ? capitalize(editValue) : capitalize(name)}</Text> :
-                        <HStack width="full" mr={2}>
+                        oldCategory.subcategories.length>=10 && <HStack width="full" mr={2}>
                             <Input
                                 size="sm"
                                 variant="flushed"
@@ -167,25 +132,6 @@ const SubcategoryItem = ({subcategory, setAlert, setWarning, clearWarning, oldCa
                     </Button>
                 </Flex>
             </HStack>
-            {
-                showChilds && childs.length<5 && 
-                <HStack p={2} ml={20}>   
-                    <Input variant="filled" value={newChildValue} onChange={e=>setNewChildValue(e.target.value)} size="sm"/>
-                    <Button isLoading={isSubmitting} onClick={addChild} colorScheme="primary" size="sm">
-                        <AddIcon/>
-                    </Button>
-                </HStack>
-            }
-            {showChilds && childs.map((child)=> <ChildItem 
-                oldCategory={oldCategory} 
-                oldSubcategory={subcategory}
-                key={child.id} 
-                child={child}
-                setWarning={setWarning}
-                setAlert={setAlert}
-                clearWarning={clearWarning}
-            />)
-            }
         </>
     )
 }

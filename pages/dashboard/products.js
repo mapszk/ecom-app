@@ -1,22 +1,17 @@
 import { Box, Grid } from "@chakra-ui/react"
-import { useRouter } from "next/dist/client/router"
-import { useEffect } from "react"
+import { useState } from "react"
+import Container from "../../components/Container"
 import DashHeader from "../../components/Dashboard/DashHeader"
 import DashInfo from "../../components/Dashboard/DashInfo"
 import ProductForm from "../../components/Dashboard/ProductForm/ProductForm"
 import ProductList from "../../components/Dashboard/ProductList/ProductList"
 import withAuth from "../../hoc/withAuth"
-import { useAuth } from "../../hooks/useAuth"
-import { db } from '../../util/firebase'
+import { firestore } from "../../util/firebaseServer"
 
 const Products = ({products, categories}) => {
-    const { user } = useAuth()
-    const router = useRouter()
-    useEffect(()=>{
-        if(!user) router.push('/login')
-    })
+    const [productsToShow, setProductsToShow] = useState(products)
     return(
-        <>
+        <Container>
             <DashHeader/>
             <Box
                 my={4}
@@ -29,25 +24,25 @@ const Products = ({products, categories}) => {
             >
                 <DashInfo link={'/dashboard'}/>
                 <Grid gridGap={4} templateColumns="repeat(auto-fit, minmax(300px, 1fr))">
-                    <ProductForm categories={categories}/>
-                    <ProductList categories={categories} products={products} />
+                    <ProductForm categories={categories} setProductsToShow={setProductsToShow} />
+                    <ProductList categories={categories} productsToShow={productsToShow} />
                 </Grid>
             </Box>
-        </>
+        </Container>
     )
 }
 
 export async function getServerSideProps() {
     const categories = []
     const products = []
-    await db.collection('categories')
+    await firestore.collection('categories')
         .get()
         .then(querySnapshot=>{
             querySnapshot.forEach(doc=>{
                 categories.push(doc.data())
             })  
         })
-    await db.collection('products')
+    await firestore.collection('products')
         .get()
         .then(querySnapshot=>{
             querySnapshot.forEach(doc=>{

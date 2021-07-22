@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertIcon, Box, Heading, Text } from "@chakra-
 import { useState } from "react"
 import CategoryItem from "./CategoryItem"
 
-const CategoryList = ({categories}) => {
+const CategoryList = ({categoriesToShow, setCategoriesToShow}) => {
     const [warning, setWarning] = useState(false)
     const [alert, setAlert] = useState({})
     const clearWarning = () => {
@@ -14,20 +14,22 @@ const CategoryList = ({categories}) => {
     return (
         <Box>
             <Heading size="md" mb={4}>Lista de categorias</Heading>
+            {
+                warning && 
+                <Alert my={2} status={alert.type} rounded="md">
+                    <AlertIcon />
+                    <AlertDescription>{alert.msg}</AlertDescription>
+                </Alert>
+            }
             <Box height="500px" overflowY="auto">
                 {
-                    warning && 
-                    <Alert my={2} status={alert.type} rounded="md">
-                        <AlertIcon />
-                        <AlertDescription>{alert.msg}</AlertDescription>
-                    </Alert>
-                }
-                {
-                    categories.length===0 &&
+                    categoriesToShow.length===0 &&
                     <Text>No tienes ninguna categoría</Text>
                 }
                 {
-                    categories.map((category)=> <CategoryItem 
+                    categoriesToShow.map((category)=> <CategoryItem 
+                        setCategoriesToShow={setCategoriesToShow}
+                        categoriesToShow={categoriesToShow}
                         key={category.id} 
                         category={category}
                         setWarning={setWarning} 

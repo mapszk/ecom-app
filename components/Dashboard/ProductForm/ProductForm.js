@@ -1,26 +1,17 @@
-import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Textarea } from "@chakra-ui/react"
 import { useRef, useState } from "react"
-import { db, storage } from "../../../util/firebase"
+import { db, storage } from "../../../util/firebaseClient"
 import uniqid from 'uniqid'
 import { useRouter } from "next/dist/client/router"
 
 const fileRegex = /^.*\.(jpg|JPG|jpeg|png)$/
 
-const ProductForm = ({categories}) => {
+const ProductForm = ({categories, setProductsToShow}) => {
     const file = useRef()
-    const router = useRouter()
     let subcategories = []
-    let childs = []
     for(let category of categories){
         for(let subs of category.subcategories){
             subcategories.push(subs)
-        }
-    }
-    for(let category of categories){
-        for(let subs of category.subcategories){
-            for(let ch of subs.childs){
-                childs.push(ch)
-            }
         }
     }
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -28,9 +19,10 @@ const ProductForm = ({categories}) => {
     const [alert, setAlert] = useState({})
     const [price, setPrice] = useState(0)
     const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
+    const [shortDesc, setShortDesc] = useState('')
     const [selectedCat, setSelectedCat] = useState(null)
     const [selectedSubCat, setSelectedSubCat] = useState(null)
-    const [selectedChild, setSelectedChild] = useState(null)
 
     const handleSubmit = async e => {
         e.preventDefault()
@@ -38,7 +30,7 @@ const ProductForm = ({categories}) => {
         setAlert({})
         setIsSubmitting(true)
         //validation
-        if(title==='' || selectedCat===null || price===0){
+        if(title==='' || selectedCat===null || price===0 || desc==='' || shortDesc===''){
             setIsSubmitting(false)
             setWarning(true)
             setAlert({msg: 'Por favor, rellena todos los campos', type:'error'})
@@ -56,11 +48,13 @@ const ProductForm = ({categories}) => {
         const newProduct = {
             id: uniqid(),
             name: title,
+            desc,
+            shortDesc,
+            date: Date.now(),
             price: Number(price),
             imageURL: null,
             category: selectedCat,
             subcategory: selectedSubCat || null,
-            child: selectedChild || null,    
         }
         if(file.current.files.length>0){
             await storage.ref().child('products/'+ newProduct.id)
@@ -80,7 +74,7 @@ const ProductForm = ({categories}) => {
                 setIsSubmitting(false)
                 setWarning(true)
                 setAlert({msg: 'Producto agregado', type: 'success'})
-                router.reload()
+                setProductsToShow(prods=> ([...prods, newProduct]))
             })
     }
     return (
@@ -99,20 +93,23 @@ const ProductForm = ({categories}) => {
                                 <option value='default' disabled>Selecciona una categoría</option>
                                 {categories.map(cat=> <option key={cat.id} value={cat.name}>{cat.name}</option>)}
                             </Select>
-                            <FormLabel>Subcategoría</FormLabel>
+                            <FormLabel>Subcategoría <small>(opcional)</small></FormLabel>
                             <Select defaultValue="default" onChange={(e)=>setSelectedSubCat(e.target.value)}>
                                 <option value="default" disabled>Selecciona una subcategoría</option>
                                 <option value={false}>Ninguna</option>
-                                {subcategories.length>0 && subcategories.map(sub=> <option key={sub.id} value={sub.name}>{sub.name}</option>)}
-                            </Select>
-                            <FormLabel>Hijo</FormLabel>
-                            <Select onChange={e=> setSelectedChild(e.target.value)} defaultValue="default">
-                                <option value="default" disabled>Selecciona un hijo</option>
-                                <option value={false}>Ninguna</option>
-                                {childs.length>0 && childs.map(ch=> <option key={ch.id} value={ch.name}>{ch.name}</option>)}
+                                {selectedCat && 
+                                categories.filter(cat=> cat.name===selectedCat)[0].subcategories.map(sub=> <option key={sub.id} value={sub.name}>{sub.name}</option>)}
                             </Select>
                         </Stack>
                     </FormLabel>
+                </FormControl>
+                <FormControl mb={2}>
+                    <FormLabel>Descripción corta</FormLabel>
+                    <Textarea value={desc} onChange={e=>setDesc(e.target.value)} maxLength={90} resize="none"></Textarea>
+                </FormControl>
+                <FormControl mb={2}>
+                    <FormLabel>Descripción detallada</FormLabel>
+                    <Textarea value={shortDesc} onChange={e=>setShortDesc(e.target.value)} maxLength={90} resize="vertical"></Textarea>
                 </FormControl>
                 <FormControl mb={2}>
                     <FormLabel>Imágenes</FormLabel>

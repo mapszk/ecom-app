@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertIcon, Box, Heading, Select, Text } from "
 import { useState } from "react"
 import ProductItem from "./ProductItem"
 
-const ProductList = ({products, categories}) => {
+const ProductList = ({categories, productsToShow}) => {
     const [warning, setWarning] = useState(false)
     const [filter, setFilter] = useState('null')
     const [alert, setAlert] = useState({})
@@ -36,14 +36,14 @@ const ProductList = ({products, categories}) => {
                 }
                 {
                     filter && filter==='null' ?
-                    products.map(prod=> <ProductItem
+                    productsToShow.map(prod=> <ProductItem
                         product={prod}
                         key={prod.id}
                         setWarning={setWarning}
                         setAlert={setAlert}
                         clearWarning={clearWarning}
                     />) :
-                    products.filter(prod=> prod.category===filter).map(prod=> <ProductItem
+                    productsToShow.filter(prod=> prod.category===filter).map(prod=> <ProductItem
                         product={prod}
                         key={prod.id}
                         setWarning={setWarning}

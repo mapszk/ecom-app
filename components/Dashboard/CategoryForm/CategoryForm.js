@@ -1,24 +1,22 @@
-import { FormControl, FormLabel, Box, Button, Heading, Input, Radio, RadioGroup, HStack, Alert, AlertIcon, CloseButton, AlertTitle, AlertDescription } from "@chakra-ui/react"
-import { useRef, useState } from "react"
-import { db } from "../../../util/firebase"
+import { FormControl, FormLabel, Box, Button, Heading, Input, Radio, RadioGroup, HStack, Alert, AlertIcon, AlertDescription } from "@chakra-ui/react"
+import { useState } from "react"
+import { db } from "../../../util/firebaseClient"
 import SubcategoryInput from "./SubcategoryInput"
 import uniqid from 'uniqid'
-import { useRouter } from "next/dist/client/router"
 
-const CategoryForm = () => {
+const CategoryForm = ({setCategoriesToShow, categoriesToShow}) => {
     const [hasSub, setHasSub] = useState(null)
     const [catName, setCatName] = useState('')
     const [subcategories, setSubcategories] = useState([])
     const [warning, setWarning] = useState(false)
     const [alert, setAlert] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const router = useRouter()
 
     const handleSubs = () => {
         setHasSub(true)
         if(subcategories.length===0){
             setSubcategories(subcategories=> {
-                return ([{name:'', id: uniqid(), childs: []}])
+                return ([{name:'', id: uniqid()}])
             })
         }
     }
@@ -56,7 +54,6 @@ const CategoryForm = () => {
             return ({
                 ...subcategory,
                 name: subcategory.name.trim(),
-                childs: subcategory.childs.map(child=> ({...child, name: child.name.trim()}))
             })
         })
         const newCategory = {
@@ -66,26 +63,23 @@ const CategoryForm = () => {
         }
 
         //add to database
-        const addData = async () => {
-            await db.collection('categories')
-                .doc(newCategory.id)
-                .set(newCategory)
-                .then(()=>{
-                    setWarning(true)
-                    setAlert({msg: 'Categoria agregada', type: 'success'})
-                    setIsSubmitting(false)
-                    router.reload()
-                    return
-                })
-                .catch((err)=>{
-                    console.log(err)
-                    setWarning(true)
-                    setAlert({msg: 'Ha ocurrido un error, por favor intenta de nuevo', type: 'error'})
-                    setIsSubmitting(false)
-                    return
-                })
-        }
-        addData()
+        await db.collection('categories')
+            .doc(newCategory.id)
+            .set(newCategory)
+            .then(()=>{
+                setWarning(true)
+                setAlert({msg: 'Categoria agregada', type: 'success'})
+                setIsSubmitting(false)
+                setCategoriesToShow(cats=> ([...cats, newCategory]))
+                return
+            })
+            .catch((err)=>{
+                console.log(err)
+                setWarning(true)
+                setAlert({msg: 'Ha ocurrido un error, por favor intenta de nuevo', type: 'error'})
+                setIsSubmitting(false)
+                return
+            })
     }
     return(
         <Box>
@@ -120,7 +114,13 @@ const CategoryForm = () => {
                             <AlertDescription mr={2}>{alert.msg}</AlertDescription>
                         </Alert>
                     }
-                    <Button loadingText="Enviando" isLoading={isSubmitting} type="submit" colorScheme="primary" isFullWidth mt={4}>Agregar</Button>
+                    {
+                        <Alert status="info" rounded="md" mt={4}>
+                            <AlertIcon />
+                            <AlertDescription mr={2}>No puedes agregar más de 5 categorías</AlertDescription>
+                        </Alert>
+                    }
+                    <Button disabled={categoriesToShow.length>=5} loadingText="Enviando" isLoading={isSubmitting} type="submit" colorScheme="primary" isFullWidth mt={4}>Agregar</Button>
             </form>
         </Box>
     )

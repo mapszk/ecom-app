@@ -1,17 +1,16 @@
-import { Button, Flex, Spacer, Text, Box, HStack, Input, FormLabel, VStack, Heading, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react"
+import { Button, Flex, Spacer, Text, Box, HStack, Input, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react"
 import { AddIcon, CheckIcon, ChevronDownIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { useRef, useState } from "react"
 import uniqid from 'uniqid'
 import SubcategoryItem from "./SubcategoryItem"
 import { capitalize } from "../../../util/capitalize"
-import { db } from "../../../util/firebase"
+import { db } from "../../../util/firebaseClient"
 import { useRouter } from "next/dist/client/router"
 
-const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
+const CategoryItem = ({category, setAlert, setWarning, clearWarning, setCategoriesToShow, categoriesToShow}) => {
     const { name, subcategories } = category
     const [modal, setModal] = useState(false)
     const cancelRef = useRef()
-    const categoryRef = useRef()
     const [isEditing, setIsEditing] = useState(false)
     const [showSubcategories, setShowSubcategories] = useState(false)
     const [editValue, setEditValue] = useState(capitalize(name))
@@ -51,7 +50,6 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
         const newSubcategory = {
             id: uniqid(),
             name: newSubValue.trim(),
-            childs: []
         }
         await db.collection('categories')
             .doc(category.id)
@@ -70,7 +68,15 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
                 setEdited(true)
                 setIsSubmitting(false)
                 setNewSubValue('')
-                router.reload()
+                const newCategory = {
+                    name: category.name,
+                    id: category.id,
+                    subcategories: [...category.subcategories, newSubcategory]
+                }
+                const newCategories = categoriesToShow.filter(cat=> cat.id!==category.id)
+                newCategories.push(newCategory)
+                console.log(newCategories)
+                setCategoriesToShow(newCategories)  
             })
             .catch(()=>{
                 setWarning(true)
@@ -86,12 +92,12 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
             .doc(category.id)
             .delete()
             .then(()=>{
-                categoryRef.current.remove()
                 setIsSubmitting(false)
                 setModal(false)
                 setAlert({msg: 'Categoría borrada', type: 'success'})
                 setWarning(true)
                 clearWarning()
+                router.reload()
                 return
             })
             .catch(()=>{
@@ -129,7 +135,7 @@ const CategoryItem = ({category, setAlert, setWarning, clearWarning}) => {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
-            <Box ref={categoryRef}>
+            <Box>
                 <HStack
                     rounded="md"
                     p={2}

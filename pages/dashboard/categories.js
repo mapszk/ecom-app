@@ -1,22 +1,17 @@
-import { db } from "../../util/firebase"
 import { Box, Grid } from "@chakra-ui/react"
 import CategoryForm from "../../components/Dashboard/CategoryForm/CategoryForm"
 import CategoryList from "../../components/Dashboard/CategoryList/CategoryList"
 import DashHeader from "../../components/Dashboard/DashHeader"
 import DashInfo from '../../components/Dashboard/DashInfo'
-import { useEffect } from "react"
-import { useAuth } from "../../hooks/useAuth"
-import { useRouter } from "next/dist/client/router"
 import withAuth from "../../hoc/withAuth"
+import Container from "../../components/Container"
+import { firestore } from "../../util/firebaseServer"
+import { useState } from "react"
 
 const Categories = ({categories}) => {
-    const { user } = useAuth()
-    const router = useRouter()
-    useEffect(()=>{
-        if(!user) router.push('/login')
-    })
+    const [categoriesToShow, setCategoriesToShow] = useState(categories)
     return(
-        <>
+        <Container>
             <DashHeader/>
             <Box
                 my={4}
@@ -29,17 +24,17 @@ const Categories = ({categories}) => {
             >
                 <DashInfo link={'/dashboard'}/>
                 <Grid gridGap={4} templateColumns="repeat(auto-fit, minmax(300px, 1fr))">
-                    <CategoryForm/>
-                    <CategoryList categories={categories}/>
+                    <CategoryForm categoriesToShow={categoriesToShow} setCategoriesToShow={setCategoriesToShow}/>
+                    <CategoryList categoriesToShow={categoriesToShow} setCategoriesToShow={setCategoriesToShow}/>
                 </Grid>
             </Box>
-        </>
+        </Container>
     )
 }
 
 export async function getServerSideProps(ctx) {
     const data = []
-    await db.collection('categories')
+    await firestore.collection('categories')
         .get()
         .then(querySnapshot=>{
             querySnapshot.forEach(doc=>{

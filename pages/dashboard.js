@@ -1,13 +1,12 @@
 import { Grid } from "@chakra-ui/react"
+import Container from "../components/Container"
 import DashCard from "../components/Dashboard/DashCard"
 import DashHeader from "../components/Dashboard/DashHeader"
-import StoreSettings from "../components/Dashboard/StoreSettings"
 import withAuth from "../hoc/withAuth"
-import { db } from "../util/firebase"
 
-const Dashboard = ({userData}) => {
+const Dashboard = () => {
     return(
-        <>
+        <Container>
             <DashHeader/>
             <Grid 
                 mt={5}
@@ -24,25 +23,14 @@ const Dashboard = ({userData}) => {
                     title="Categorias"
                     desc="Controla todas las categorias de tu tienda online"
                 />
-                <StoreSettings colors={userData.colors}/>
+                <DashCard
+                    link="/dashboard/store"
+                    title="Tienda"
+                    desc="Ajusta la identidad de tu tienda"
+                />
             </Grid>
-        </>
+        </Container>
     )
-}
-
-export async function getServerSideProps() {
-    let userData 
-    await db.collection('users')
-        .doc('userInfo')
-        .get()
-        .then((doc)=>{
-            userData = doc.data()
-        })
-    return { 
-        props: {
-            userData
-        }
-    }
 }
 
 export default withAuth(Dashboard)

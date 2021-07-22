@@ -11,10 +11,12 @@
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "axios": "^0.21.1",
     "firebase": "^8.7.1",
+    "firebase-admin": "^9.11.0",
     "framer-motion": "^4.1.17",
-    "mongodb": "^3.5.9",
-    "next": "latest",
+    "mercadopago": "^1.5.8",
+    "next": "11.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -22,6 +24,8 @@
   "devDependencies": {
     "chroma-js": "^2.1.2",
     "react-color": "^2.19.3",
+    "react-icons": "^4.2.0",
+    "swiper": "^6.7.5",
     "uniqid": "^5.3.0"
   }
 }

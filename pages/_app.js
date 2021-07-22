@@ -1,9 +1,11 @@
-import { Box, ChakraProvider, extendTheme, Flex, Spinner } from "@chakra-ui/react"
+import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import AuthContextProvider from "../contexts/authContext"
-import { db } from "../util/firebase"
+import ShoppingCartContextProvider from '../contexts/ShoppingCartContext'
+import { db } from "../util/firebaseClient"
 import { mode } from '@chakra-ui/theme-tools'
 import chroma from 'chroma-js'
+import Loader from "../components/Loader"
 
 const MyApp = ({Component, pageProps}) => {
     const [theme, setTheme] = useState()
@@ -68,18 +70,16 @@ const MyApp = ({Component, pageProps}) => {
     if(loading) return(
         <ChakraProvider>
             <AuthContextProvider>
-                <Flex justify="center" align="center" width="100vw" height="100vh">
-                    <Spinner thickness="5px" m="auto" size="xl" color="teal" />
-                </Flex>
+                <Loader/>
             </AuthContextProvider>
         </ChakraProvider>
     )
     return(
         <ChakraProvider theme={theme}>
             <AuthContextProvider>
-                <Box width="95%" maxWidth="1024px" mx="auto">
+                <ShoppingCartContextProvider>
                     <Component {...pageProps}/>
-                </Box>
+                </ShoppingCartContextProvider>
             </AuthContextProvider>
         </ChakraProvider>
     )

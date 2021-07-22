@@ -1,7 +1,8 @@
 import React from 'react'
 import { Box, Flex, Spinner } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
-import { auth } from "../util/firebase"
+import { auth } from "../util/firebaseClient"
+import Loader from '../components/Loader'
 
 export const AuthContext = React.createContext()
 
@@ -26,13 +27,7 @@ const AuthContextProvider = ({children}) => {
     }, [])
     return (
         <AuthContext.Provider value={{user}}>
-            {
-                loading ? 
-                <Flex justify="center" align="center" width="100vw" height="100vh">
-                    <Spinner m="auto" size="xl" color="primary.500" />
-                </Flex>
-                : children
-            }
+            {loading ? <Loader/> : children}
         </AuthContext.Provider>
     )
 }
