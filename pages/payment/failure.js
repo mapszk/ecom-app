@@ -43,7 +43,7 @@ export async function getStaticProps() {
             categories,
             userData
         },
-        revalidate: 60 * 10
+		revalidate: 60 * 2
     }
 }
 export default success

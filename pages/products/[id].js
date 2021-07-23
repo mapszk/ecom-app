@@ -149,7 +149,7 @@ export async function getStaticProps({params}) {
             relatedProducts,
             userData
         },
-        revalidate: 60 * 10
+		revalidate: 60 * 2
     }
 }
 

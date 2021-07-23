@@ -76,7 +76,7 @@ export async function getStaticProps({params}) {
             products,
             userData
         },
-        revalidate: 60 * 10
+		revalidate: 60 * 2
     }
 }
 export default Subcategory

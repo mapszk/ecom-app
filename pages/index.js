@@ -53,7 +53,7 @@ export async function getStaticProps() {
 			userData,
 			latestProducts
 		},
-		revalidate: 10
+		revalidate: 60 * 2
 	}
 }
 export default Home

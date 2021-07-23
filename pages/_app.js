@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
-import AuthContextProvider from "../contexts/authContext"
+import AuthContextProvider from "../contexts/AuthContext"
 import ShoppingCartContextProvider from '../contexts/ShoppingCartContext'
 import { db } from "../util/firebaseClient"
 import { mode } from '@chakra-ui/theme-tools'
