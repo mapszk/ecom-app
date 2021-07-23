@@ -6,9 +6,9 @@ This is a self-managed e-commerce website, you can create categories, subcategor
 
 Web's database and auth is provided by Firebase, you can start a firebase project and create `.env.local` to save the keys. Files that use keys are:
 
-1 'util/firebaseClient.js'
-2 'util/firebaseServer.js'
-3 'pages/api/payment.js'
+* 'util/firebaseClient.js'
+* 'util/firebaseServer.js'
+* 'pages/api/payment.js'
 
 ### Run Next.js in development mode
 
