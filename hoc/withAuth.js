@@ -9,10 +9,11 @@ const withAuth = Component => {
         const { user } = useAuth()
         useEffect(()=>{
             if(!user) router.push({pathname: '/login'}, undefined, {shallow: true})
-        }, [])
+        }, [user])
         if(!user){
             return <LoginPage />
-        }else return (
+        }
+        return (
             <Component {...props} />
         )
     }
