@@ -32,7 +32,6 @@ const login = ({userData}) => {
         await auth.signInWithEmailAndPassword(email, pass)
             .then(user=>{
                 setIsSubmitting(false)
-                console.log('logeado')
                 router.push('/dashboard')
             })
             .catch(err=>{

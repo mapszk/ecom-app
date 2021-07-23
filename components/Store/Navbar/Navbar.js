@@ -79,7 +79,7 @@ const Navbar = ({categories, logo}) => {
                             <DrawerCloseButton/>
                             <DrawerBody width="full">
                                 <VStack w="full" spacing={6} pt={20}>
-                                {categories.map(cat=> <NavbarMenuItem category={cat} />)}
+                                {categories.map(cat=> <NavbarMenuItem key={cat.id} category={cat} />)}
                                 </VStack>
                             </DrawerBody>
                         </DrawerContent>

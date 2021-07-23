@@ -3,8 +3,8 @@ import Head from "next/head"
 import Container from "../components/Container"
 import DashCard from "../components/Dashboard/DashCard"
 import DashHeader from "../components/Dashboard/DashHeader"
-import withAuth from "../hoc/withAuth"
-import { firestore } from "../util/firebaseServer"
+import { adminAuth, firestore } from "../util/firebaseServer"
+import nookies from 'nookies'
 
 const Dashboard = ({userData}) => {
     return(
@@ -40,18 +40,26 @@ const Dashboard = ({userData}) => {
     )
 }
 
-export async function getServerSideProps() {
-    let userData
-    await firestore.collection('users')
-        .doc('userInfo')
-        .get()
-        .then(doc=>{
-            userData = doc.data()
-        })
-    return {
-        props: {
-            userData
+export async function getServerSideProps(ctx) {
+    try{
+        const cookies = nookies.get(ctx)
+        const token = await adminAuth.verifyIdToken(cookies.token)
+        let userData
+        await firestore.collection('users')
+            .doc('userInfo')
+            .get()
+            .then(doc=>{
+                userData = doc.data()
+            })
+        return {
+            props: {
+                userData
+            }
         }
+    }catch(err){
+        ctx.res.writeHead(302, {Location: '/login'})
+        ctx.res.end()
+        return { props: {}}
     }
 }
-export default withAuth(Dashboard)
+export default Dashboard

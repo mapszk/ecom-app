@@ -3,11 +3,11 @@ import CategoryForm from "../../components/Dashboard/CategoryForm/CategoryForm"
 import CategoryList from "../../components/Dashboard/CategoryList/CategoryList"
 import DashHeader from "../../components/Dashboard/DashHeader"
 import DashInfo from '../../components/Dashboard/DashInfo'
-import withAuth from "../../hoc/withAuth"
 import Container from "../../components/Container"
-import { firestore } from "../../util/firebaseServer"
+import { adminAuth, firestore } from "../../util/firebaseServer"
 import { useState } from "react"
 import Head from "next/head"
+import nookies from 'nookies'
 
 const Categories = ({userData, categories}) => {
     const [categoriesToShow, setCategoriesToShow] = useState(categories)
@@ -39,25 +39,33 @@ const Categories = ({userData, categories}) => {
 }
 
 export async function getServerSideProps(ctx) {
-    const data = []
-    let userData
-    await firestore.collection('categories')
-        .get()
-        .then(querySnapshot=>{
-            querySnapshot.forEach(doc=>{
-                data.push(doc.data())
+    try{
+        const cookies = nookies.get(ctx)
+        const token = await adminAuth.verifyIdToken(cookies.token)
+        const data = []
+        let userData
+        await firestore.collection('categories')
+            .get()
+            .then(querySnapshot=>{
+                querySnapshot.forEach(doc=>{
+                    data.push(doc.data())
+                })
             })
-        })
-    await firestore.collection('users')
-        .doc('userInfo')
-        .get()
-        .then(doc=> userData = doc.data())
-    return {
-        props: {
-            categories: data,
-            userData
+        await firestore.collection('users')
+            .doc('userInfo')
+            .get()
+            .then(doc=> userData = doc.data())
+        return {
+            props: {
+                categories: data,
+                userData
+            }
         }
+    }catch(err){
+        ctx.res.writeHead(302, {Location: '/login'})
+        ctx.res.end()
+        return { props: {}}
     }
 }
 
-export default withAuth(Categories) 
+export default Categories

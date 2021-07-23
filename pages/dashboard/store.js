@@ -2,11 +2,12 @@ import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel
 import DashHeader from "../../components/Dashboard/DashHeader"
 import { SwatchesPicker } from "react-color"
 import { useRef, useState } from "react"
-import withAuth from "../../hoc/withAuth"
 import Container from "../../components/Container"
-import { firestore } from "../../util/firebaseServer"
+import { adminAuth, firestore } from "../../util/firebaseServer"
 import { db, storage } from "../../util/firebaseClient"
 import Head from "next/head"
+import nookies from 'nookies'
+import DashInfo from "../../components/Dashboard/DashInfo"
 
 const fileRegex = /^.*\.(jpg|JPG|jpeg|png)$/
 
@@ -179,7 +180,7 @@ const Store = ({userData}) => {
                     borderColor="primary.500"
                     p={4}
                 >
-                    <Heading size="lg" mb={2}>Tienda</Heading>
+                    <DashInfo link='/dashboard'/>
                     <FormControl>
                         <FormLabel>Nombre de tu tienda</FormLabel>
                         <Input value={title} onChange={e=>setTitle(e.target.value)} />
@@ -268,17 +269,25 @@ const Store = ({userData}) => {
     )
 }
 
-export async function getServerSideProps() {
-    let userData 
-    await firestore.collection('users')
-        .doc('userInfo')
-        .get()
-        .then((doc)=> userData = doc.data())
-    return { 
-        props: {
-            userData
+export async function getServerSideProps(ctx) {
+    try{
+        const cookies = nookies.get(ctx)
+        const token = await adminAuth.verifyIdToken(cookies.token)
+        let userData 
+        await firestore.collection('users')
+            .doc('userInfo')
+            .get()
+            .then((doc)=> userData = doc.data())
+        return { 
+            props: {
+                userData
+            }
         }
+    }catch(err){
+        ctx.res.writeHead(302, {Location: '/login'})
+        ctx.res.end()
+        return { props: {}}
     }
 }
 
-export default withAuth(Store)
+export default Store

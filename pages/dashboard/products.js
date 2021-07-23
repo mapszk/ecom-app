@@ -6,10 +6,10 @@ import DashHeader from "../../components/Dashboard/DashHeader"
 import DashInfo from "../../components/Dashboard/DashInfo"
 import ProductForm from "../../components/Dashboard/ProductForm/ProductForm"
 import ProductList from "../../components/Dashboard/ProductList/ProductList"
-import withAuth from "../../hoc/withAuth"
-import { firestore } from "../../util/firebaseServer"
+import nookies from 'nookies'
+import { adminAuth, firestore } from "../../util/firebaseServer"
 
-const Products = ({products, categories}) => {
+const Products = ({userData, products, categories}) => {
     const [productsToShow, setProductsToShow] = useState(products)
     return(
         <>
@@ -38,35 +38,43 @@ const Products = ({products, categories}) => {
     )
 }
 
-export async function getServerSideProps() {
-    let userData
-    const categories = []
-    const products = []
-    await firestore.collection('categories')
-        .get()
-        .then(querySnapshot=>{
-            querySnapshot.forEach(doc=>{
-                categories.push(doc.data())
-            })  
-        })
-    await firestore.collection('products')
-        .get()
-        .then(querySnapshot=>{
-            querySnapshot.forEach(doc=>{
-                products.push(doc.data())
+export async function getServerSideProps(ctx) {
+    try{
+        const cookies = nookies.get(ctx)
+        const token = await adminAuth.verifyIdToken(cookies.token)
+        let userData
+        const categories = []
+        const products = []
+        await firestore.collection('categories')
+            .get()
+            .then(querySnapshot=>{
+                querySnapshot.forEach(doc=>{
+                    categories.push(doc.data())
+                })  
             })
-        })
-    await firestore.collection('users')
-        .doc('userInfo')
-        .get()
-        .then(doc=> userData = doc.data())
-    return {
-        props: {
-            categories,
-            products,
-            userData
+        await firestore.collection('products')
+            .get()
+            .then(querySnapshot=>{
+                querySnapshot.forEach(doc=>{
+                    products.push(doc.data())
+                })
+            })
+        await firestore.collection('users')
+            .doc('userInfo')
+            .get()
+            .then(doc=> userData = doc.data())
+        return {
+            props: {
+                categories,
+                products,
+                userData
+            }
         }
+    }catch(err){
+        ctx.res.writeHead(302, {Location: '/login'})
+        ctx.res.end()
+        return { props: {}}
     }
 }
 
-export default withAuth(Products) 
+export default Products
