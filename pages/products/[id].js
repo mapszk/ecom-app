@@ -1,5 +1,6 @@
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, Heading, Image, Spacer, Text, useMediaQuery } from "@chakra-ui/react"
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Heading, Image, Spacer, Text, useMediaQuery } from "@chakra-ui/react"
 import { useRouter } from "next/dist/client/router"
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import Container from "../../components/Container"
 import Loader from "../../components/Loader"
@@ -7,7 +8,6 @@ import Footer from "../../components/Store/Footer"
 import Navbar from "../../components/Store/Navbar/Navbar"
 import ProductsGroups from '../../components/Store/Product/ProductsGroup'
 import { useShoppingCart } from "../../hooks/useShoppingCart"
-import { db } from "../../util/firebaseClient"
 import { firestore } from "../../util/firebaseServer"
 import { formatPrice } from "../../util/formatPrice"
 
@@ -29,6 +29,9 @@ const Product = ({product, categories, relatedProducts, userData}) => {
     if(router.isFallback) return <Loader/>
     return (
         <>
+            <Head>
+                <title>{userData.title} - {product.name}</title>
+            </Head>
             <Navbar logo={userData.logoImgUrl} categories={categories} />
             <Container>
                 <Breadcrumb

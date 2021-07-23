@@ -1,17 +1,20 @@
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
 import Footer from "../../../../components/Store/Footer"
 import Navbar from "../../../../components/Store/Navbar/Navbar"
 import Container from '../../../../components/Container'
 import { useRouter } from "next/dist/client/router"
 import { firestore } from "../../../../util/firebaseServer"
 import CategoryProducts from "../../../../components/Store/CategoryProducts"
+import Head from "next/head"
 
 const Subcategory = ({categories, products, userData}) => {
-    console.log(products)
     const router = useRouter()
     const { category: categoryName, subcategory: subcategoryName } = router.query
     return (
         <>
+            <Head>
+                <title>{userData.title} - {categoryName} / {subcategoryName}</title>
+            </Head>
             <Navbar logo={userData.logoImgUrl} categories={categories}/>
             <Container>
                 <Breadcrumb 
@@ -65,9 +68,7 @@ export async function getStaticProps({params}) {
     await firestore.collection('users')
 		.doc('userInfo')
 		.get()
-		.then(doc=>{
-			userData = doc.data()
-		})
+		.then(doc=> userData = doc.data())
     return {
         props: {
             categories,

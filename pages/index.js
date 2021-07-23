@@ -1,4 +1,5 @@
 import { firestore } from '../util/firebaseServer'
+import Head from 'next/head'
 import Navbar from '../components/Store/Navbar/Navbar'
 import Container from '../components/Container'
 import HomeWelcome from '../components/Store/HomeWelcome'
@@ -8,6 +9,9 @@ import Footer from '../components/Store/Footer'
 const Home = ({categories, userData, latestProducts}) => {
 	return (
 		<>
+			<Head>
+				<title>{userData.title}</title>
+			</Head>
 			<Navbar logo={userData.logoImgUrl} categories={categories}/>
 			<Container>
 				<HomeWelcome image={userData.welcomeImageUrl} welcome={userData.welcome}/>

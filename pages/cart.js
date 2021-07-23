@@ -2,7 +2,6 @@ import Navbar from '../components/Store/Navbar/Navbar'
 import Footer from '../components/Store/Footer'
 import Container from '../components/Container'
 import Head from 'next/head'
-import Script from 'next/script'
 import { firestore } from '../util/firebaseServer'
 import { useShoppingCart } from '../hooks/useShoppingCart'
 import { Box, Heading, Text } from '@chakra-ui/layout'
@@ -15,7 +14,7 @@ const cart = ({categories, userData}) => {
     const [paymentLink, setPaymentLink] = useState(null)
     const [loading, setLoading] = useState(false)
     const router = useRouter()
-    const { shoppingCart, setShoppingCart } = useShoppingCart()
+    const { shoppingCart } = useShoppingCart()
     useEffect(()=>{
         const preferences = [...shoppingCart]
         const getBuyButton = async () => {
@@ -28,9 +27,9 @@ const cart = ({categories, userData}) => {
                 body: JSON.stringify({
                     items: preferences,
                     back_urls: {
-                        'success': 'http://localhost:8080/feedback',
-                        'failure': 'http://localhost:8080/feedback',
-                        'pending': 'http://localhost:8080/feedback',
+                        'success': process.env.NEXT_PUBLIC_DOMAIN + '/payment/success',
+                        'failure': process.env.NEXT_PUBLIC_DOMAIN + '/payment/failure',
+                        'pending': process.env.NEXT_PUBLIC_DOMAIN + '/payment/pending',
                     }
                 })
             })
@@ -45,7 +44,7 @@ const cart = ({categories, userData}) => {
     return (
         <>
             <Head>
-                <Script src="https://sdk.mercadopago.com/js/v2"/>
+                <title>{userData.title} - Carrito de compra</title>
             </Head>
             <Navbar logo={userData.logoImgUrl} categories={categories}/>
             <Container>

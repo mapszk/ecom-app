@@ -1,4 +1,5 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
+import Head from "next/head"
 import Container from "../../../components/Container"
 import CategoryProducts from "../../../components/Store/CategoryProducts"
 import Footer from "../../../components/Store/Footer"
@@ -7,7 +8,10 @@ import { firestore } from "../../../util/firebaseServer"
 
 const Category = ({categories, category, products, userData}) => {
     return (
-        <>
+        <>  
+            <Head>
+                <title>{userData.title} - {category.name}</title>
+            </Head>
             <Navbar logo={userData.logoImgUrl} categories={categories}/>
             <Container>
                 <Breadcrumb 
