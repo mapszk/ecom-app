@@ -111,7 +111,7 @@ const Store = ({userData}) => {
                             await db.collection('users')
                                 .doc('userInfo')
                                 .update({
-                                    welcomeImageURL: url
+                                    welcomeImgUrl: url
                                 })
                                 .then(()=>{
                                     setIsSubmitting(false)

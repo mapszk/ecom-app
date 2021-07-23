@@ -1,7 +1,5 @@
 var admin = require("firebase-admin");
 
-//var serviceAccount = require("./ecom-app-44d38-firebase-adminsdk-g0twl-5f05fb2305.json");
-
 if(!admin.apps.length){
   admin.initializeApp({
     credential: admin.credential.cert({

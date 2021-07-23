@@ -7,6 +7,7 @@ import withAuth from "../hoc/withAuth"
 import { firestore } from "../util/firebaseServer"
 
 const Dashboard = ({userData}) => {
+    
     return(
         <>
             <Head>

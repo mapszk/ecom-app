@@ -14,7 +14,7 @@ const Home = ({categories, userData, latestProducts}) => {
 			</Head>
 			<Navbar logo={userData.logoImgUrl} categories={categories}/>
 			<Container>
-				<HomeWelcome image={userData.welcomeImageUrl} welcome={userData.welcome}/>
+				<HomeWelcome image={userData.welcomeImgUrl} welcome={userData.welcome}/>
 				<ProductsGroup title="Ultimos productos" products={latestProducts}/>
 			</Container>
 			<Footer/>
@@ -53,7 +53,7 @@ export async function getStaticProps() {
 			userData,
 			latestProducts
 		},
-		revalidate: 60 * 10
+		revalidate: 10
 	}
 }
 export default Home
