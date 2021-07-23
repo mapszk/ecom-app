@@ -12,8 +12,7 @@ const withAuth = Component => {
         }, [])
         if(!user){
             return <LoginPage />
-        }
-        return (
+        }else return (
             <Component {...props} />
         )
     }

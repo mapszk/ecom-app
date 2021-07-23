@@ -19,7 +19,8 @@ const MyApp = ({Component, pageProps}) => {
                     const { colors } = doc.data()
                     const primaryScale = chroma.scale([
                         chroma(colors.primary).brighten(2), 
-                        colors.primary, chroma(colors.primary).darken(2)
+                        colors.primary, 
+                        chroma(colors.primary).darken(2)
                     ])
                     const secondaryScale = chroma.scale([
                         chroma(colors.secondary).brighten(2), 
