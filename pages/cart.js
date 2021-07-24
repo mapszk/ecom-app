@@ -20,6 +20,7 @@ const cart = ({categories, userData}) => {
             setLoading(true)
             await fetch('http://localhost:3000/api/payment', {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     "Content-Type": "application/json"
                 },
