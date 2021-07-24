@@ -1,6 +1,24 @@
-const mercadopago = require('mercadopago')
+import mercadopago from 'mercadopago'
+import Cors from 'cors'
+
+function initMiddleware(middleware) {
+    return (req, res) =>
+    new Promise((resolve, reject) => {
+        middleware(req, res, (result) => {
+            if(result instanceof Error){
+                return reject(result)
+            }
+            return resolve(result)
+        })
+    })
+}
+
+const cors = initMiddleware(Cors({
+    methods: ['GET', 'POST']
+}))
 
 export default async function handler(req, res) {
+    await cors(req, res)
     mercadopago.configurations.setAccessToken(process.env.SELLER_ACCESS_TOKEN)
     let preference = {
         items: req.body.items,

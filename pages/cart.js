@@ -20,7 +20,6 @@ const cart = ({categories, userData}) => {
             setLoading(true)
             await fetch('http://localhost:3000/api/payment', {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -59,7 +58,7 @@ const cart = ({categories, userData}) => {
                 </Box> :
                 <Box p={2} w="full" maxWidth="500px" mx="auto">
                     <Heading size="lg" mb={4}>Carrito de compra</Heading>
-                    {shoppingCart.map(product=> <ShoppingCartItem product={product}/>)}
+                    {shoppingCart.map(product=> <ShoppingCartItem key={product.id} product={product}/>)}
                     <LinkBox>
                         <LinkOverlay href={paymentLink} isExternal>
                             <Button
