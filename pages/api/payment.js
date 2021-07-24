@@ -11,6 +11,6 @@ export default async function handler(req, res) {
             res.json({init_point: response.body.init_point})
         })
         .catch(err=>{
-            console.log(err)
+            res.status(500).send(err)
         })
 }

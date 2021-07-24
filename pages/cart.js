@@ -16,7 +16,6 @@ const cart = ({categories, userData}) => {
     const router = useRouter()
     const { shoppingCart } = useShoppingCart()
     useEffect(()=>{
-        const preferences = [...shoppingCart]
         const getBuyButton = async () => {
             setLoading(true)
             await fetch('http://localhost:3000/api/payment', {
@@ -25,7 +24,7 @@ const cart = ({categories, userData}) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    items: preferences,
+                    items: shoppingCart,
                     back_urls: {
                         'success': process.env.NEXT_PUBLIC_DOMAIN + '/payment/success',
                         'failure': process.env.NEXT_PUBLIC_DOMAIN + '/payment/failure',
@@ -37,6 +36,9 @@ const cart = ({categories, userData}) => {
             .then(json=> {
                 setPaymentLink(json.init_point)
                 setLoading(false)
+            })
+            .catch(err=>{
+                console.log(err)
             })
         }
         getBuyButton()
